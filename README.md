@@ -1,59 +1,126 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Proyecto Web Laravel (Equipo de Desarrollo para la Hackaton)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto utiliza **Laravel Sail** (Docker) para garantizar que todos los desarrolladores trabajen exactamente en el mismo entorno, sin importar si usan Windows, Mac o Linux.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Requisitos Previos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Antes de empezar, asegúrate de tener instalado:
+1.  **Docker Desktop** (Debe estar corriendo).
+2.  **Git**.
+3.  **WSL2** (Si usas Windows, es obligatorio para evitar problemas de rendimiento y rutas).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Instalación e Inicio (Setup)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Sigue estos pasos estrictamente la primera vez que descargues el proyecto:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/TU_USUARIO/TU_REPO.git
+cd nombre-de-la-carpeta
+```
 
-## Laravel Sponsors
+### 2. Configurar variables de entorno
+Crea tu archivo de configuración local copiando el ejemplo:
+```bash
+cp .env.example .env
+```
+(Aquí puedes ajustar las credenciales de DB si fuera necesario, pero por defecto Sail ya las configura).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Instalar dependencias (El paso mágico)
+Como probablemente no tengas PHP/Composer instalado en tu máquina local, usaremos un contenedor temporal para descargar las librerías del proyecto (vendor/). Ejecuta este bloque completo en tu terminal:
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+```
 
-### Premium Partners
+### 4. Levantar el servidor
+Ahora que ya tenemos las librerías, iniciamos Sail:
+```bash
+./vendor/bin/sail up -d
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 5. Configuración final
+Generamos la clave de encriptación y corremos las migraciones de la base de datos:
+```bash
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate
+```
 
-## Contributing
+👉 **¡Listo! Accede a:** [http://localhost](http://localhost)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🤝 Flujo de Trabajo (Git Workflow)
+Para mantener el orden y evitar romper el código, utilizamos la siguiente estrategia de ramas. Por favor, léelo con atención.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Las Ramas Principales
+*   🛡️ **main (Producción)**: Es la rama sagrada. El código aquí SIEMPRE funciona. Está protegida: No se puede hacer push directo. Solo recibe cambios mediante Pull Request aprobados desde develop.
+*   🛠️ **develop (Desarrollo)**: Aquí integramos el trabajo de todos. Es nuestra rama base para trabajar.
 
-## Security Vulnerabilities
+### Cómo trabajar en una nueva tarea (Features)
+Cada vez que vayas a arreglar un bug o crear una función nueva:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1.  **Actualízate**: Baja siempre lo último de develop.
+    ```bash
+    git checkout develop
+    git pull origin develop
+    ```
+2.  **Crea tu rama**: Usa el prefijo feature/.
+    ```bash
+    git checkout -b feature/nombre-de-la-tarea
+    ```
+3.  **Trabaja y Guarda**: Haz tus commits normales.
+4.  **Publica**: Sube tu rama a GitHub.
+    ```bash
+    git push origin feature/nombre-de-la-tarea
+    ```
+5.  **Solicita Fusión (Pull Request)**:
+    *   Ve a GitHub y abre un Pull Request de tu rama hacia `develop`.
+    *   Avisa al equipo para que revisen tu código.
+    *   Una vez aprobado, se fusionará.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🐳 Comandos de Docker (Sail) Cheatsheet
+
+Como usamos Sail, no ejecutes `php artisan` o `composer` directamente en tu consola. Usa estos comandos:
+
+| Acción | Comando |
+| :--- | :--- |
+| **Iniciar servidor** | `./vendor/bin/sail up -d` |
+| **Detener servidor** | `./vendor/bin/sail stop` |
+| **Ver logs** | `./vendor/bin/sail logs -f` |
+| **Ejecutar Artisan** | `./vendor/bin/sail artisan [comando]` |
+| **Instalar paquete** | `./vendor/bin/sail composer require [paquete]` |
+| **Entrar al contenedor** | `./vendor/bin/sail shell` |
+
+> [!TIP]
+> **Tip Pro**: Para escribir menos, crea un alias en tu terminal:
+> ```bash
+> alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+> ```
+> Así solo escribirás `sail up`, `sail artisan`, etc.
+
+---
+
+## ⚠️ Solución de Problemas Comunes
+
+### Error: "Permission denied" en storage/
+Si ves una pantalla roja de error de permisos, ejecuta esto para dar acceso a las carpetas de caché:
+```bash
+./vendor/bin/sail exec laravel.test chmod -R 777 storage bootstrap/cache
+```
+
+### Error: Base de datos vacía
+Si te dice que no encuentra la tabla `sessions` o `users`, olvidaste correr las migraciones:
+```bash
+./vendor/bin/sail artisan migrate
+```
