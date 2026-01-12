@@ -18,7 +18,7 @@ Antes de empezar, asegúrate de tener instalado:
 
 ---
 
-## � Instalación e Inicio (Setup Completo)
+## 📦 Instalación e Inicio (Setup Completo)
 
 Sigue estos pasos **estrictamente** la primera vez que descargues el proyecto:
 
@@ -466,7 +466,7 @@ Para eliminar TODO (incluyendo volúmenes de base de datos):
 
 ## 👥 Equipo
 
-Si tienes problemas o preguntas, contacta al equipo en el canal de Discord/Slack del proyecto.
+Si tienes problemas o preguntas, contacta al equipo en los canales del proyecto.
 
 ---
 
