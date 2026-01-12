@@ -9,7 +9,7 @@ Este proyecto utiliza **Laravel Sail** (Docker) para garantizar que todos los de
 Antes de empezar, asegúrate de tener instalado:
 1.  **Docker Desktop** (Debe estar corriendo).
 2.  **Git**.
-3.  **WSL2** (Si usas Windows, es obligatorio para evitar problemas de rendimiento y rutas).
+3.  **WSL2** (Si usas Windows, al momento de instalar docker este se instala por defecto, si no fuera el caso corrige el problema).
 
 ---
 
@@ -18,6 +18,7 @@ Antes de empezar, asegúrate de tener instalado:
 Sigue estos pasos estrictamente la primera vez que descargues el proyecto:
 
 ### 1. Clonar el repositorio
+
 ```bash
 git clone https://github.com/TU_USUARIO/TU_REPO.git
 cd nombre-de-la-carpeta
