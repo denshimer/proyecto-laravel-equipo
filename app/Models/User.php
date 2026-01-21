@@ -46,4 +46,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relación: Un usuario escribe muchos posts
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    // Relación: Un usuario tiene muchas inscripciones
+    public function eventRegistrations()
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
 }
