@@ -1,5 +1,4 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
-import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -12,9 +11,22 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Instrument Sans', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                display: ['Barlow', 'sans-serif'],
+                mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
+            colors: {
+                //Variables de estilo
+                sici: {
+                    dark: '#0B0E14',      // Fondo principal
+                    card: '#1B2230',      // Fondo secundario/tarjetas
+                    red: '#EF4444',       // Botones
+                    redDark: '#DC2626',   // Hover botones
+                    light: '#F3F4F6',     // Texto principal
+                    muted: '#9CA3AF',     // Texto secundario
+                }
+            }
         },
     },
-    plugins: [forms],
+    plugins: [require('@tailwindcss/forms')],
 };
