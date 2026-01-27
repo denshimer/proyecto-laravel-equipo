@@ -1,100 +1,149 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Comunidad Laravel</title>
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="antialiased bg-gray-100 text-gray-800 font-sans">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SICI - ISI | Home</title>
 
-    <nav class="bg-white shadow-md p-4 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-2xl font-bold text-indigo-600">MiComunidad</div>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="bg-sici-dark text-sici-light font-sans antialiased">
+
+        <nav class="border-b border-gray-800 bg-sici-dark/95 fixed w-full z-50 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-20 items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-12 w-auto" src="{{ asset('images/logo.png') }}" alt="SICI-ISI Logo">
+                    </div>
+
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#" class="text-sici-red font-semibold font-display text-lg">Inicio</a>
+                        <a href="#" class="text-sici-light hover:text-sici-red transition font-display text-lg">Sobre SICI-ISI</a>
+                        <a href="#" class="text-sici-light hover:text-sici-red transition font-display text-lg">Publicaciones</a>
+                        <a href="#" class="text-sici-light hover:text-sici-red transition font-display text-lg">Eventos</a>
+                    </div>
+
+                    <div>
+                        <a href="{{ route('login') }}" class="bg-sici-red hover:bg-sici-redDark text-white px-6 py-2 rounded font-semibold transition">
+                            Ingresar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="relative bg-cover bg-center h-[600px] flex items-center" style="background-image: url('{{ asset('images/hero-bg.jpg') }}');">
+            <div class="absolute inset-0 bg-sici-dark/70"></div>
             
-            <div>
-                @if (Route::has('login'))
-                    <div class="space-x-4">
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="text-gray-700 hover:text-indigo-600 font-semibold">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}" class="text-gray-700 hover:text-indigo-600 font-semibold">Iniciar Sesión</a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">Registrarse</a>
-                            @endif
-                        @endauth
-                    </div>
-                @endif
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="max-w-3xl">
+                    <h2 class="text-sici-red font-bold text-xl md:text-2xl mb-2 tracking-wider">BIENVENIDO A SICI-ISI</h2>
+                    <h1 class="text-4xl md:text-6xl font-display font-bold text-white leading-tight mb-6">
+                        Sociedad de Investigación, Ciencia e Innovación.<br>
+                        INGENIERÍA DE SISTEMAS INFORMÁTICOS
+                    </h1>
+                    <button class="bg-sici-red hover:bg-sici-redDark text-white px-8 py-3 rounded font-semibold text-lg transition">
+                        Conoce más
+                    </button>
+                </div>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <header class="bg-indigo-700 text-white py-20 text-center">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">Bienvenido a la Comunidad</h1>
-        <p class="text-lg md:text-xl opacity-90">Enterate de las últimas noticias y participa en nuestros eventos.</p>
-    </header>
+        <section class="py-20 bg-sici-dark">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-display font-semibold text-white mb-10">Publicaciones y Eventos</h2>
 
-    <div class="max-w-7xl mx-auto p-6 space-y-12">
-        
-        <section>
-            <h2 class="text-3xl font-bold mb-6 border-l-4 border-indigo-500 pl-4">📰 Noticias Destacadas</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach($destacados as $noticia)
-                    <article class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                        <div class="h-48 bg-gray-300 w-full flex items-center justify-center text-gray-500">
-                            @if($noticia->image_path)
-                                <img src="{{ asset('storage/' . $noticia->image_path) }}" class="w-full h-full object-cover">
-                            @else
-                                <span>Sin Imagen</span>
-                            @endif
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div class="bg-sici-card rounded-lg overflow-hidden border border-gray-800 group hover:border-sici-red transition duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="{{ asset('images/card.jpeg') }}" alt="Evento" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         </div>
-                        
-                        <div class="p-5">
-                            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wide">{{ $noticia->category->name ?? 'General' }}</span>
-                            <h3 class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{ $noticia->title }}</h3>
-                            <p class="mt-2 text-gray-600 line-clamp-3">{{ $noticia->excerpt }}</p>
-                            <a href="#" class="mt-4 inline-block text-indigo-600 hover:underline">Leer más &rarr;</a>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Publicación: <br>Sobre los proyectos de grado</h3>
+                            <p class="text-sici-muted text-sm mb-4 font-mono">10 febrero 2026</p>
+                            <a href="#" class="text-sici-red font-bold text-sm tracking-wide hover:underline flex items-center">
+                                Leer más <span class="ml-1">&gt;</span>
+                            </a>
                         </div>
-                    </article>
-                @endforeach
+                    </div>
+
+                    <div class="bg-sici-card rounded-lg overflow-hidden border border-gray-800 group hover:border-sici-red transition duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="{{ asset('images/card.jpeg') }}" alt="Evento" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Evento: <br>Bootcamp Frontend</h3>
+                            <p class="text-sici-muted text-sm mb-4 font-mono">16 febrero 2026</p>
+                            <a href="#" class="text-sici-red font-bold text-sm tracking-wide hover:underline flex items-center">
+                                Leer más <span class="ml-1">&gt;</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="bg-sici-card rounded-lg overflow-hidden border border-gray-800 group hover:border-sici-red transition duration-300">
+                        <div class="h-48 overflow-hidden">
+                            <img src="{{ asset('images/card.jpeg') }}" alt="Evento" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-2">Publicación: <br>Modernizar la Universidad</h3>
+                            <p class="text-sici-muted text-sm mb-4 font-mono">17 febrero 2026</p>
+                            <a href="#" class="text-sici-red font-bold text-sm tracking-wide hover:underline flex items-center">
+                                Leer más <span class="ml-1">&gt;</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="flex justify-center mt-10 space-x-2">
+                     <span class="w-8 h-1 bg-sici-red rounded-full"></span>
+                     <span class="w-2 h-1 bg-gray-600 rounded-full"></span>
+                     <span class="w-2 h-1 bg-gray-600 rounded-full"></span>
+                </div>
             </div>
         </section>
 
-        <section>
-            <h2 class="text-3xl font-bold mb-6 border-l-4 border-green-500 pl-4">📅 Próximos Eventos</h2>
-            <div class="space-y-4">
-                @foreach($proximosEventos as $evento)
-                    <div class="flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:border-green-300 transition">
-                        
-                        <div class="bg-green-100 text-green-800 w-full md:w-32 flex flex-col items-center justify-center p-4">
-                            <span class="text-3xl font-bold">{{ $evento->eventDetails->start_date->format('d') }}</span>
-                            <span class="uppercase text-sm font-bold">{{ $evento->eventDetails->start_date->translatedFormat('M') }}</span>
-                            <span class="text-xs">{{ $evento->eventDetails->start_date->format('H:i') }} hrs</span>
-                        </div>
-
-                        <div class="p-6 flex-1 flex flex-col justify-center">
-                            <h3 class="text-xl font-bold text-gray-800">{{ $evento->title }}</h3>
-                            <div class="flex items-center text-gray-500 mt-2 space-x-4 text-sm">
-                                <span>📍 {{ $evento->eventDetails->location }}</span>
-                                <span>👥 Cupos: {{ $evento->registrations->count() }} / {{ $evento->eventDetails->max_attendees ?? '∞' }}</span>
-                            </div>
-                        </div>
-
-                        <div class="p-6 flex items-center justify-center bg-gray-50">
-                            <button class="bg-green-600 text-white px-6 py-2 rounded-full font-bold shadow hover:bg-green-700 transition transform hover:-translate-y-1">
-                                Inscribirme
-                            </button>
-                        </div>
+        <footer class="bg-sici-card border-t border-sici-red/30 pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                    
+                    <div>
+                        <h4 class="text-xl font-bold text-white mb-6">Contacto</h4>
+                        <ul class="space-y-4 text-sici-light">
+                            <li class="flex items-center">
+                                <span class="mr-3">📞</span> 7xxxxxxxxx
+                            </li>
+                            <li class="flex items-center">
+                                <span class="mr-3">✉️</span> univalle@univalle.edu
+                            </li>
+                        </ul>
                     </div>
-                @endforeach
+
+                    <div class="text-center md:text-left">
+                        <h4 class="text-xl font-bold text-white mb-6">Social</h4>
+                        <div class="flex justify-center md:justify-start space-x-6">
+                            <a href="#" class="text-gray-400 hover:text-white"><span class="text-2xl">🎵</span></a> <a href="#" class="text-blue-600 hover:text-blue-500"><span class="text-2xl">fb</span></a> <a href="#" class="text-red-600 hover:text-red-500"><span class="text-2xl">▶️</span></a> </div>
+                    </div>
+
+                    <div class="text-right">
+                        <h4 class="text-sici-red font-bold text-xl mb-6">Inicio</h4>
+                        <ul class="space-y-3 text-sici-light">
+                            <li><a href="#" class="hover:text-sici-red transition">Sobre SICI-ISI</a></li>
+                            <li><a href="#" class="hover:text-sici-red transition">Publicaciones</a></li>
+                            <li><a href="#" class="hover:text-sici-red transition">Eventos</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-800 pt-8 text-center">
+                     <img class="h-16 w-auto mx-auto mb-4" src="{{ asset('images/logo.png') }}" alt="SICI-ISI Logo Footer">
+                </div>
             </div>
-        </section>
-
-    </div>
-
-    <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
-        <p>&copy; 2026 Plataforma de Eventos. Desarrollado con Laravel 11.</p>
-    </footer>
-</body>
+        </footer>
+    </body>
 </html>
