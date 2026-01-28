@@ -7,11 +7,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @method bool hasRole(string|array $roles, string $guard = null)
+ * @method bool hasAnyRole(string|array $roles, string $guard = null)
+ * @method void assignRole(...$roles)
+ * @method void removeRole(...$roles)
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+
+    
     use HasFactory, Notifiable, HasRoles;
     /**
      * The attributes that are mass assignable.
@@ -19,9 +27,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name', // Nuevo
+        'last_name',  // Nuevo
         'email',
         'password',
+        'profile_type',
+        'is_active',
     ];
 
     /**
@@ -39,11 +50,19 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    // Helper para obtener el nombre completo
+    public function getNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -57,5 +76,27 @@ class User extends Authenticatable
     public function eventRegistrations()
     {
         return $this->hasMany(EventRegistration::class);
+    }
+
+    // Relación 1:1 con Student o Teacher
+    public function student(): HasOne
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    // Relación 1:1 con Teacher
+    public function teacher(): HasOne
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    // Helper para obtener el perfil asociado (student o teacher)
+    public function getProfileAttribute()
+    {
+        if ($this->profile_type === 'teacher') {
+            return $this->teacher;
+        }
+        // Por defecto retornamos estudiante si no es docente
+        return $this->student;
     }
 }
