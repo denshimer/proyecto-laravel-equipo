@@ -2,9 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/nosotros', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/publicaciones', function () {
+    return view('publications');
+})->name('publications');
+
+Route::get('/eventos', function () {
+    return view('events');
+})->name('events');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
