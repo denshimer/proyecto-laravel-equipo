@@ -13,32 +13,56 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // 1. VISTA PARA EL ADMIN / DEV (Directiva)
+        // ESTUDIANTES: Redirigir a home (no necesitan dashboard de gestión)
+        if ($user->hasRole('estudiante')) {
+            return redirect()->route('home');
+        }
+
+        // 1. DASHBOARD ADMIN/DEV
         if ($user->hasRole(['admin', 'dev'])) {
-            // Datos: Estadísticas generales
             $totalEventos = Post::whereHas('contentType', fn($q) => $q->where('key', 'event'))->count();
             $totalUsuarios = \App\Models\User::count();
+            $totalEstudiantes = \App\Models\User::role('estudiante')->count();
+            $totalDocentes = \App\Models\User::role('docente')->count();
+            $totalInscripciones = EventRegistration::count();
             
-            return view('dashboard.admin', compact('totalEventos', 'totalUsuarios'));
+            // Eventos recientes
+            $eventosRecientes = Post::whereHas('contentType', fn($q) => $q->where('key', 'event'))
+                ->with(['author', 'eventDetails'])
+                ->latest()
+                ->take(5)
+                ->get();
+            
+            return view('dashboard.admin', compact(
+                'totalEventos', 
+                'totalUsuarios', 
+                'totalEstudiantes', 
+                'totalDocentes',
+                'totalInscripciones',
+                'eventosRecientes'
+            ));
         }
 
-        // 2. VISTA PARA DOCENTE
+        // 2. DASHBOARD DOCENTE
         if ($user->hasRole('docente')) {
-            // Datos: Solo SUS eventos creados
             $misEventos = Post::where('user_id', $user->id)
-                              ->with('eventDetails')
-                              ->latest()
-                              ->get();
+                ->whereHas('contentType', fn($q) => $q->where('key', 'event'))
+                ->with(['eventDetails', 'registrations'])
+                ->withCount('registrations')
+                ->latest()
+                ->get();
 
-            return view('dashboard.teacher', compact('misEventos'));
+            // Inscripciones recientes a mis eventos
+            $inscripcionesRecientes = EventRegistration::whereIn('post_id', $misEventos->pluck('id'))
+                ->with(['user', 'post'])
+                ->latest()
+                ->take(10)
+                ->get();
+
+            return view('dashboard.teacher', compact('misEventos', 'inscripcionesRecientes'));
         }
 
-        // 3. VISTA PARA ESTUDIANTE (Default)
-        // Datos: Eventos a los que se inscribió
-        // (Asumimos que existe la relación 'registrations' en User, si no, la creamos luego)
-        // Por ahora mandamos un array vacío para que no falle
-        $misInscripciones = []; 
-        
-        return view('dashboard.student', compact('misInscripciones'));
+        // Fallback
+        return view('dashboard');
     }
 }

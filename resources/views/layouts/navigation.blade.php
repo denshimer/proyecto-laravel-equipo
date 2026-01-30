@@ -11,11 +11,39 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-nav-link>
+                
+                <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                    {{ __('Inicio') }}
+                </x-nav-link>
+                
+                @role('admin|dev')
+                <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                    {{ __('Usuarios') }}
+                </x-nav-link>
+                <x-nav-link :href="route('admin.posts.index')" :active="request()->routeIs('admin.posts.*')">
+                    {{ __('Publicaciones') }}
+                </x-nav-link>
+                <x-nav-link :href="route('admin.role-requests.index')" :active="request()->routeIs('admin.role-requests.*')">
+                    {{ __('Solicitudes de Rol') }}
+                </x-nav-link>
+                @endrole
+                
+                @role('docente')
+                <x-nav-link :href="route('teacher.events.index')" :active="request()->routeIs('teacher.events.*')">
+                    {{ __('Mis Eventos') }}
+                </x-nav-link>
+                @endrole
+                
+                @role('estudiante')
+                <x-nav-link :href="route('student.events.index')" :active="request()->routeIs('student.events.*')">
+                    {{ __('Eventos') }}
+                </x-nav-link>
+                @endrole
+            </div>
             </div>
 
             <!-- Settings Dropdown -->

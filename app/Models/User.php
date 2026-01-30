@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method bool hasRole(string|array $roles, string $guard = null)
@@ -20,7 +21,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
 
     
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *

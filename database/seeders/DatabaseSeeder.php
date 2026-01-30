@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         // Esto debe ir ANTES de crear usuarios
         $this->call([
             ContentTypeSeeder::class,
+            CategorySeeder::class, // Categorías para posts y eventos
             RoleManagerSeeder::class, // <--- AQUÍ DEBE ESTAR, AL PRINCIPIO
         ]);
 
@@ -49,6 +50,9 @@ class DatabaseSeeder extends Seeder
             'email' => 'alumno@sistema.com',
         ]);
 
+
+        /*
+
         // 3. Crear 10 Noticias
         \App\Models\Post::factory(10)->create([
             'content_type_id' => 1 // Fuerza que sean noticias
@@ -67,8 +71,10 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        */
+
         // 5. RELLENO MASIVO
-        User::factory()->count(10)->docente()->create();
-        User::factory()->count(50)->estudiante()->create();
+        //User::factory()->count(10)->docente()->create();
+        //User::factory()->count(50)->estudiante()->create();
     }
 }

@@ -16,8 +16,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+        $user->load(['student', 'teacher']);
+        
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 
@@ -26,19 +29,41 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
+
+        // Actualizar perfil de estudiante
+        if ($user->profile_type === 'student' && $user->student) {
+            $user->student->update([
+                'university_code' => $request->input('university_code'),
+                'semester' => $request->input('semester'),
+                'phone' => $request->input('phone'),
+                'birthdate' => $request->input('birthdate'),
+            ]);
+        } 
+        
+        // Actualizar perfil de docente
+        elseif ($user->profile_type === 'teacher' && $user->teacher) {
+            $user->teacher->update([
+                'academic_degree' => $request->input('academic_degree'),
+                'specialty' => $request->input('specialty'),
+                'phone' => $request->input('phone'),
+                'bio' => $request->input('bio'),
+                'website_url' => $request->input('website_url'),
+            ]);
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**
-     * Delete the user's account.
+     * Delete the user's account (Soft Delete).
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -50,11 +75,12 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        // Usar soft delete en lugar de delete permanente
         $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return Redirect::to('/')->with('success', 'Tu cuenta ha sido desactivada.');
     }
 }

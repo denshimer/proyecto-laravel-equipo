@@ -22,8 +22,9 @@ return new class extends Migration
         $table->string('first_name')->after('id'); // Nombre
         
         // El resto sigue igual...
-        $table->string('profile_type')->default('student')->after('email')->index();
-        $table->boolean('is_active')->default(true)->after('profile_type');
+        $table->string('profile_type')->nullable(); // 'student', 'teacher', 'admin'
+        $table->boolean('is_active')->default(true);
+        $table->softDeletes(); // Para soft delete de usuarios
         });
 
         // 2. TABLA ESTUDIANTES (Perfil Académico)
