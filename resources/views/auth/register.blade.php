@@ -1,77 +1,65 @@
-<x-guest-layout title="Registrarse | SICI-ISI">
-    
-    <div class="bg-sici-card border border-gray-800 rounded-xl shadow-2xl p-8 backdrop-blur-sm">
-        
-        <h2 class="text-2xl font-display font-bold text-center text-white mb-8 tracking-wide">
-            REGISTRARSE
-        </h2>
+<x-guest-layout>
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div class="mb-5">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                    </div>
-                    <input id="name" type="text" name="name" :value="old('name')" required autofocus placeholder="Nombre Completo"
-                        class="bg-sici-dark border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-sici-red focus:border-sici-red block w-full pl-10 p-3 placeholder-gray-600 transition shadow-inner">
-                </div>
-                <x-input-error :messages="$errors->get('name')" class="mt-2 text-red-500 text-xs" />
+        <!-- Nombre y Apellido -->
+        <div class="flex gap-4">
+            <div class="w-1/2">
+                <x-input-label for="first_name" value="Nombre" />
+                <x-text-input id="first_name" class="block mt-1 w-full" type="text" name="first_name" :value="old('first_name')" required autofocus />
+                <x-input-error :messages="$errors->get('first_name')" class="mt-2" />
             </div>
-
-            <div class="mb-5">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                    </div>
-                    <input id="email" type="email" name="email" :value="old('email')" required placeholder="Correo Electrónico"
-                        class="bg-sici-dark border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-sici-red focus:border-sici-red block w-full pl-10 p-3 placeholder-gray-600 transition shadow-inner">
-                </div>
-                <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500 text-xs" />
+            <div class="w-1/2">
+                <x-input-label for="last_name" value="Apellido" />
+                <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required />
+                <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
             </div>
+        </div>
 
-            <div class="mb-5">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                    </div>
-                    <input id="password" type="password" name="password" required placeholder="Contraseña"
-                        class="bg-sici-dark border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-sici-red focus:border-sici-red block w-full pl-10 p-3 placeholder-gray-600 transition shadow-inner">
+        <!-- Email -->
+        <div class="mt-4">
+            <x-input-label for="email" value="Correo Electrónico" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mt-4">
+            <x-input-label for="password" value="Contraseña" />
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <p class="text-xs text-gray-500 mt-1">Mínimo 8 caracteres</p>
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" value="Confirmar Contraseña" />
+            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <!-- Info Box -->
+        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div class="text-sm">
+                    <p class="font-medium text-blue-900">¿Eres docente?</p>
+                    <p class="text-blue-700 mt-1">Regístrate normalmente y luego podrás solicitar el rol de docente desde tu perfil. Un administrador revisará y aprobará tu solicitud.</p>
                 </div>
-                <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500 text-xs" />
             </div>
+        </div>
 
-            <div class="mb-8">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                    <input id="password_confirmation" type="password" name="password_confirmation" required placeholder="Confirmar Contraseña"
-                        class="bg-sici-dark border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-sici-red focus:border-sici-red block w-full pl-10 p-3 placeholder-gray-600 transition shadow-inner">
-                </div>
-                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-red-500 text-xs" />
-            </div>
+        <!-- Botones -->
+        <div class="flex items-center justify-between mt-6">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                ¿Ya tienes cuenta? Inicia sesión
+            </a>
 
-            <button type="submit" class="w-full text-white bg-sici-red hover:bg-sici-redDark font-bold rounded-lg text-sm px-5 py-3 text-center transition duration-300 shadow-lg transform hover:-translate-y-1">
+            <x-primary-button>
                 Registrarse
-            </button>
-
-            <div class="mt-6 text-center">
-                <span class="text-sm text-gray-500">¿Ya tienes cuenta?</span>
-                <a href="{{ route('login') }}" class="text-sm font-bold text-sici-red hover:text-red-400 transition ml-1">
-                    Inicia Sesión
-                </a>
-            </div>
-
-        </form>
-    </div>
+            </x-primary-button>
+        </div>
+    </form>
 </x-guest-layout>

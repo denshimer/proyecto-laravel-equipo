@@ -17,11 +17,15 @@
                 @forelse($events as $event)
                     <article class="bg-sici-card rounded-xl overflow-hidden border border-gray-800 hover:border-sici-red transition duration-300 group shadow-lg flex flex-col h-full">
                         <div class="relative h-56 overflow-hidden">
-                            <img src="{{ asset('images/card.jpeg') }}" alt="{{ $event->title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                            @if($event->image_path)
+                                <img src="{{ asset('storage/' . $event->image_path) }}" alt="{{ $event->title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                            @else
+                                <img src="{{ asset('images/card.jpeg') }}" alt="{{ $event->title }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                            @endif
                             
                             <div class="absolute top-4 right-4 bg-sici-dark/90 backdrop-blur-sm border border-sici-red rounded-lg p-2 text-center min-w-[70px] shadow-xl">
-                                <span class="block text-2xl font-bold text-white font-display">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</span>
-                                <span class="block text-xs font-bold text-sici-red uppercase tracking-wider">{{ \Carbon\Carbon::parse($event->event_date)->format('M') }}</span>
+                                <span class="block text-2xl font-bold text-white font-display">{{ $event->eventDetails->start_date->format('d') }}</span>
+                                <span class="block text-xs font-bold text-sici-red uppercase tracking-wider">{{ $event->eventDetails->start_date->format('M') }}</span>
                             </div>
                         </div>
 
@@ -35,12 +39,12 @@
                             </h3>
                             
                             <p class="text-gray-400 text-sm mb-6 flex-grow">
-                                {{ Str::limit($event->description, 100) }}
+                                {{ Str::limit($event->excerpt, 100) }}
                             </p>
 
                             <div class="border-t border-gray-700 pt-4 flex items-center justify-between">
                                 <div class="text-sici-muted text-sm flex items-center">
-                                    <span>📍 {{ $event->location }}</span>
+                                    <span>📍 {{ $event->eventDetails->location }}</span>
                                 </div>
                                 <a href="{{ route('events.show', $event) }}" class="bg-sici-red hover:bg-sici-redDark text-white text-sm font-bold px-4 py-2 rounded transition">
                                     Ver Detalles
