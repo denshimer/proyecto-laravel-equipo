@@ -17,13 +17,17 @@
                     <article class="bg-sici-card rounded-xl overflow-hidden border border-gray-800 hover:border-sici-red transition duration-300 shadow-2xl group">
                         <div class="h-64 md:h-96 overflow-hidden relative">
                             <div class="absolute inset-0 bg-sici-dark/20 group-hover:bg-transparent transition z-10"></div>
-                            <img src="{{ asset('images/card.jpeg') }}" alt="{{ $featured->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            @if($featured->image_path)
+                                <img src="{{ asset('storage/' . $featured->image_path) }}" alt="{{ $featured->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            @else
+                                <img src="{{ asset('images/card.jpeg') }}" alt="{{ $featured->title }}" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                            @endif
                         </div>
                         
                         <div class="p-8">
                             <div class="flex items-center space-x-2 mb-4">
                                 <span class="bg-sici-red text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Nuevo</span>
-                                <span class="text-sici-muted text-sm font-mono">{{ $featured->published_at->format('d M Y') }}</span>
+                                <span class="text-sici-muted text-sm font-mono">{{ $featured->created_at->format('d M Y') }}</span>
                             </div>
                             
                             <h2 class="text-2xl md:text-3xl font-bold text-white mb-4 font-display">
@@ -57,10 +61,14 @@
                         @forelse($others as $post)
                         <article class="bg-sici-card rounded-lg overflow-hidden border border-gray-800 hover:border-gray-600 transition group flex flex-col md:flex-row lg:flex-col">
                             <div class="h-40 overflow-hidden w-full relative">
-                                <img src="{{ asset('images/card.jpeg') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                @if($post->image_path)
+                                    <img src="{{ asset('storage/' . $post->image_path) }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                @else
+                                    <img src="{{ asset('images/card.jpeg') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                                @endif
                             </div>
                             <div class="p-5 flex flex-col justify-center">
-                                <span class="text-sici-muted text-xs font-mono mb-1">{{ $post->published_at->format('d M Y') }}</span>
+                                <span class="text-sici-muted text-xs font-mono mb-1">{{ $post->created_at->format('d M Y') }}</span>
                                 <h4 class="text-lg font-bold text-white leading-tight group-hover:text-sici-red transition">
                                     <a href="{{ route('publications.show', $post) }}">{{ $post->title }}</a>
                                 </h4>

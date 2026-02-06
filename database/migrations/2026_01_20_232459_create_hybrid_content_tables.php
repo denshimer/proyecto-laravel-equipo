@@ -37,14 +37,14 @@ return new class extends Migration
             // Relaciones
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('content_type_id')->constrained(); // Relación con la tabla 1
+            $table->foreignId('content_type_id')->constrained();
             
             // Contenido
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('excerpt')->nullable();
+            $table->text('excerpt')->nullable(); // Controlador asigna '' si está vacío
             $table->longText('body');
-            $table->string('image_path')->nullable();
+            $table->string('image_path')->nullable(); // Controlador asigna 'posts/default.jpg' si está vacío
             
             // Estados
             $table->boolean('is_featured')->default(false);
@@ -63,13 +63,15 @@ return new class extends Migration
             
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->string('location')->nullable();
+            $table->string('location');
             
             // ESTRATEGIA HÍBRIDA:
             // Si tiene link, usamos Google Forms/Teams. Si es null, usamos nuestra DB.
+            // Controlador asigna '' si está vacío
             $table->string('external_registration_link')->nullable(); 
             
-            $table->unsignedInteger('max_attendees')->nullable(); // Cupo máximo (null = ilimitado)
+            // Controlador asigna 0 si está vacío (0 = ilimitado)
+            $table->unsignedInteger('max_attendees')->nullable();
             
             $table->timestamps();
         });
