@@ -10,6 +10,20 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 // Ruta /home (autenticados, muestra welcome con sidebar)
 Route::get('/home', [WelcomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
 
+// ==========================================
+// RUTAS PÚBLICAS
+// ==========================================
+// Página About
+Route::get('/about', [WelcomeController::class, 'about'])->name('about');
+
+// Página de Eventos
+Route::get('/events', [WelcomeController::class, 'events'])->name('events');
+Route::get('/events/{post}', [WelcomeController::class, 'showEvent'])->name('events.show');
+
+// Página de Publicaciones
+Route::get('/publications', [WelcomeController::class, 'publications'])->name('publications');
+Route::get('/publications/{post}', [WelcomeController::class, 'showPublication'])->name('publications.show');
+
 // Dashboard genérico (redirección automática según rol)
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])

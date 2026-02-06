@@ -51,9 +51,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        /*
+        
 
-        // 3. Crear 10 Noticias
+        //3. Crear 10 Noticias
         \App\Models\Post::factory(10)->create([
             'content_type_id' => 1 // Fuerza que sean noticias
         ]);
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        */
+        
 
         // 5. RELLENO MASIVO
         //User::factory()->count(10)->docente()->create();
