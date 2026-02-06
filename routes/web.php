@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiteController;
+use App\Http\Controllers\AdminController;
 
 // Ruta HOME (pública, muestra welcome)
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
